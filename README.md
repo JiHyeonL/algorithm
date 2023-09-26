@@ -33,7 +33,7 @@ int s = Integer.parseInt(st.nextToken());
 ```
 </details>
 
-___
+
 ## 🎉 알고리즘 정리
 
 ### 백트래킹
