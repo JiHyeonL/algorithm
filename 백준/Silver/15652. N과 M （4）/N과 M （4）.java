@@ -35,7 +35,7 @@ public class Main {
 
         for (int i = start; i < N; i++) {
             arr[depth] = i + 1;
-            dfs(depth+1, arr[depth]-1);
+            dfs(depth+1, arr[depth]-1);    // 이전 값과 같거나 큰 숫자만 탐색하면 됨
         }
     }
 
