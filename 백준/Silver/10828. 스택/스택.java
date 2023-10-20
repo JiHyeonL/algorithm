@@ -20,20 +20,20 @@ public class Main {
             if (command.equals("push")) {
                 stack.push(Integer.parseInt(st.nextToken()));
             }
-            if (command.equals("pop")) {
+            else if (command.equals("pop")) {
                 if (stack.isEmpty()) {
                     System.out.println(-1);
                     continue;
                 }
                 System.out.println(stack.pop());
             }
-            if (command.equals("size")) {
+            else if (command.equals("size")) {
                 System.out.println(stack.size());
             }
-            if (command.equals("empty")) {
+            else if (command.equals("empty")) {
                 System.out.println(stack.isEmpty() ? 1 : 0);
             }
-            if (command.equals("top")) {
+            else if (command.equals("top")) {
                 if (stack.isEmpty()) {
                     System.out.println(-1);
                     continue;
