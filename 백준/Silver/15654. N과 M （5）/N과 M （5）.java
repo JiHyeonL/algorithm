@@ -35,11 +35,10 @@ public class Main {
     private static void dfs(int depth, int start, boolean[] visited) {
         // 재귀 끝
         if (depth == m) {
-            String temp = "";
             for (int i = 0; i < m; i++) {
-                temp += num[i] + " ";
+                answer.append(num[i]).append(" ");
             }
-            answer.append(temp).append("\n");
+            answer.append("\n");
             return ;
         }
         for (int i = 0; i < n; i++) {
