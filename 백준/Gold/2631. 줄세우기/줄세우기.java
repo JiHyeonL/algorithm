@@ -17,19 +17,34 @@ public class Main {
             child[i] = Integer.parseInt(br.readLine());
         }
 
-        int[] dp = new int[n]; // i를 포함하는 가장 긴 증가 수열 길이
-        for (int i = 0; i < n; i++) {
-            dp[i] = 1;
-            for (int j = 0; j < i; j++) {
-                if (child[i] > child[j]) {
-                    dp[i] = Math.max(dp[i], dp[j] + 1);
-                }
+        List<Integer> lis = new ArrayList<>();
+        lis.add(child[0]);
+        for (int i = 1; i < n; i++) {
+            if (lis.get(lis.size() -1) < child[i]) {
+                lis.add(child[i]);
+            } else {
+                int index = binarySearch(lis, child[i]);
+                lis.set(index, child[i]);
             }
         }
-        int max = 0;
-        for (int i = 0; i < n; i++) {
-            max = Math.max(dp[i], max);
+        System.out.println(n - lis.size());
+    }
+
+    private static int binarySearch(List<Integer> lis, int target) {
+        int start = 0;
+        int end = lis.size() -1;
+        while (start <= end) {
+            int mid = (start + end) / 2;
+            if (target < lis.get(mid)) {
+                end = mid - 1;
+            }
+            else if (target == lis.get(mid)) {
+                start = mid;
+            }
+            else {
+                start = mid + 1;
+            }
         }
-        System.out.println(n - max);
+        return start;
     }
 }
