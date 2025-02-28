@@ -23,15 +23,15 @@ public class Main {
         // start, end -> 공유기 사이 거리 기준
         int start = 1;
         int end = x[n - 1] - x[0] + 1;
-        while (start < end) {
+        while (start <= end) {
             int mid = (start + end) / 2;
             if (countAvailableC(mid) < c) {
-                end = mid;
+                end = mid - 1;
             } else {
                 start = mid + 1;
             }
         }
-        System.out.println(start - 1);
+        System.out.println(start -1);
     }
 
     private static int countAvailableC(int distance) {
