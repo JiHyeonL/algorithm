@@ -15,7 +15,7 @@ public class Main {
         String[] temp = br.readLine().split(" ");
         n = Integer.parseInt(temp[0]);
         m = Integer.parseInt(temp[1]);
-        // dp[i][j] = (n,m)이 정사각형의 왼쪽 위 꼭짓점일 때 정사각형 개수
+        // dp[i][j] = (n,m)이 정사각형의 오른쪽 아래 꼭짓점일 때 정사각형 개수
         int[][] dp = new int[n][m];
         for (int i = 0; i < n; i++) {
             temp = br.readLine().split("");
