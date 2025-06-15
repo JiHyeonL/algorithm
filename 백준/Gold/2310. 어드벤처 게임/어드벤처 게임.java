@@ -2,66 +2,71 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.StringTokenizer;
+import java.util.Map;
+
 
 public class Main {
 
     private static int n;
+    private static Map<Integer, List<Integer>> nextRooms;
     private static Room[] rooms;
     private static String answer;
-    private static boolean[] visited;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
-        StringTokenizer st;
         while (true) {
             n = Integer.parseInt(br.readLine());
             if (n == 0) {
                 break;
             }
             rooms = new Room[n + 1];
+            nextRooms = new HashMap<>();
             for (int i = 1; i <= n; i++) {
-                st = new StringTokenizer(br.readLine());
-                String type = String.valueOf(st.nextToken().charAt(0));
-                int cost = Integer.parseInt(st.nextToken());
+                String[] temp = br.readLine().split(" ");
+                int cost = Integer.parseInt(temp[1]);
                 List<Integer> nextR = new ArrayList<>();
-                int roomNum = 0;
-                while ((roomNum = Integer.parseInt(st.nextToken())) != 0) {
-                    nextR.add(roomNum);
+                for (int j = 2; j < temp.length - 1; j++) {
+                    nextR.add(Integer.parseInt(temp[j]));
                 }
-                rooms[i] = new Room(type, cost, nextR);
+                rooms[i] = new Room(temp[0], cost, nextR);
+                nextRooms.put(i, nextR);
             }
-            visited = new boolean[n + 1];
+
             answer = "No";
-            canGo(1, 0);
+            if (rooms[1].type.equals("L")) {
+                canGo(1, new boolean[n + 1], rooms[1].cost);
+            }
+            if (rooms[1].type.equals("E")) {
+                canGo(1, new boolean[n + 1], 0);
+            }
             sb.append(answer).append("\n");
         }
-        System.out.print(sb);
+        System.out.println(sb);
     }
 
-    private static void canGo(int room, int cost) {
+    private static void canGo(int room, boolean[] visited, int cost) {
         if (room == n) {
             answer = "Yes";
             return;
         }
 
-        for (int nextRoom : rooms[room].nextRooms) {
+        visited[room] = true;
+        for (int nextRoom : nextRooms.get(room)) {
             if (!visited[nextRoom]) {
-                int newCost = cost;
-                if (rooms[nextRoom].type.equals("L") && newCost < rooms[nextRoom].cost) {
-                    newCost = rooms[nextRoom].cost;
+                if (rooms[nextRoom].type.equals("L") && cost < rooms[nextRoom].cost) {
+                    cost = rooms[nextRoom].cost;
                 }
                 if (rooms[nextRoom].type.equals("T")) {
-                    if (newCost < rooms[nextRoom].cost) {
+                    if (cost < rooms[nextRoom].cost) {
                         continue;
                     }
-                    newCost -= rooms[nextRoom].cost;
+                    cost -= rooms[nextRoom].cost;
                 }
                 visited[nextRoom] = true;
-                canGo(nextRoom, newCost);
-                visited[nextRoom] = false;
+                canGo(nextRoom, visited, cost);
             }
         }
     }
@@ -69,7 +74,7 @@ public class Main {
     static class Room {
         String type;
         int cost;
-        List<Integer> nextRooms;
+        List<Integer> nextRooms = new ArrayList<>();
 
         public Room(String type, int cost, List<Integer> nextRooms) {
             this.type = type;
