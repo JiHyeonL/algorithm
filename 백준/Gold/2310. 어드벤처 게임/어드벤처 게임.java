@@ -1,69 +1,80 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
-    static ArrayList<Integer>[] nextRoom;
-    static char[] rooms;
-    static int[] getMoney;
-    static int N;
-    static boolean isFinished;
-    static boolean[] visited;
-    public static void main(String[] args) throws Exception {
+
+    private static int n;
+    private static Room[] rooms;
+    private static String answer;
+    private static boolean[] visited;
+
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
         StringTokenizer st;
-        StringBuilder ans = new StringBuilder();
-        N = 0;
-        while((N = Integer.parseInt(br.readLine())) != 0) {
-            rooms = new char[N+1];
-            nextRoom = new ArrayList[N+1];
-            getMoney = new int[N+1];
-            visited = new boolean[N+1];
-            for(int i=1; i<=N; i++) {
-                st = new StringTokenizer(br.readLine());
-                rooms[i] = st.nextToken().charAt(0);
-                getMoney[i] = Integer.parseInt(st.nextToken());
-                nextRoom[i] = new ArrayList<>();
-                int roomNum = 0;
-                while((roomNum = Integer.parseInt(st.nextToken())) != 0) {
-                    nextRoom[i].add(roomNum);
-                }
+        while (true) {
+            n = Integer.parseInt(br.readLine());
+            if (n == 0) {
+                break;
             }
-            isFinished = false;
-            dfs(1, 0);
-            if(isFinished) ans.append("Yes\n");
-            else ans.append("No\n");
+            rooms = new Room[n + 1];
+            for (int i = 1; i <= n; i++) {
+                st = new StringTokenizer(br.readLine());
+                String type = String.valueOf(st.nextToken().charAt(0));
+                int cost = Integer.parseInt(st.nextToken());
+                List<Integer> nextR = new ArrayList<>();
+                int roomNum = 0;
+                while ((roomNum = Integer.parseInt(st.nextToken())) != 0) {
+                    nextR.add(roomNum);
+                }
+                rooms[i] = new Room(type, cost, nextR);
+            }
+            visited = new boolean[n + 1];
+            answer = "No";
+            canGo(1, 0);
+            sb.append(answer).append("\n");
         }
-        System.out.printf(ans.toString());
+        System.out.print(sb);
     }
 
-    private static void dfs(int room, int money) {
-        if(isFinished) return;
-        if(room == N) {
-            isFinished = true;
+    private static void canGo(int room, int cost) {
+        if (room == n) {
+            answer = "Yes";
             return;
         }
 
-        for(int nRoom: nextRoom[room]) {
-            if(visited[nRoom]) continue;
-            if(rooms[nRoom] == 'L') {
-                if(getMoney[nRoom] > money) {
-                    money = getMoney[nRoom];
+        for (int nextRoom : rooms[room].nextRooms) {
+            if (!visited[nextRoom]) {
+                int newCost = cost;
+                if (rooms[nextRoom].type.equals("L") && newCost < rooms[nextRoom].cost) {
+                    newCost = rooms[nextRoom].cost;
                 }
-            } else if(rooms[nRoom] == 'T') {
-                if(getMoney[nRoom] <= money) {
-                    money -= getMoney[nRoom];
-                } else {
-                    return;
+                if (rooms[nextRoom].type.equals("T")) {
+                    if (newCost < rooms[nextRoom].cost) {
+                        continue;
+                    }
+                    newCost -= rooms[nextRoom].cost;
                 }
+                visited[nextRoom] = true;
+                canGo(nextRoom, newCost);
+                visited[nextRoom] = false;
             }
-            visited[nRoom] = true;
-            dfs(nRoom, money);
-            visited[nRoom] = false;
         }
-        return;
+    }
+
+    static class Room {
+        String type;
+        int cost;
+        List<Integer> nextRooms;
+
+        public Room(String type, int cost, List<Integer> nextRooms) {
+            this.type = type;
+            this.cost = cost;
+            this.nextRooms = nextRooms;
+        }
     }
 }
