@@ -15,86 +15,59 @@ public class Main {
         balls = br.readLine().split("");
 
         int answer = Integer.MAX_VALUE;
-        // 빨간색 이동
+        // 빨간색 왼쪽
         int count = 0;
-        if (balls[n - 1].equals("B")) {
-            for (int i = n - 1; i >= 0; i--) {
-                if (balls[i].equals("R")) {
-                    count++;
-                }
+        boolean countStart = false;
+        for (int i = 0; i < n; i++) {
+            if (balls[i].equals("B")) {
+                countStart = true;
             }
-            answer = Math.min(answer, count);
-            count = 0;
-            for (int i = 0; i < n; i++) {
-                if (balls[i].equals("R")) {
-                    count++;
-                }
+            if (countStart && balls[i].equals("R")) {
+                count++;
             }
-            answer = Math.min(answer, count);
-        } else {
-            boolean canMove = false;
-            for (int i = n - 1; i >= 0; i--) {
-                if (balls[i].equals("B")) {
-                    canMove = true;
-                }
-                if (canMove && balls[i].equals("R")) {
-                    count++;
-                }
-            }
-            answer = Math.min(answer, count);
-            count = 0;
-            canMove = false;
-            for (int i = 0; i < n; i++) {
-                if (balls[i].equals("B")) {
-                    canMove = true;
-                }
-                if (canMove && balls[i].equals("R")) {
-                    count++;
-                }
-            }
-            answer = Math.min(answer, count);
         }
+        answer = Math.min(count, answer);
 
-        // 파란색 이동
+        // 빨간색 오른쪽
         count = 0;
-        if (balls[n - 1].equals("R")) {
-            for (int i = n - 1; i >= 0; i--) {
-                if (balls[i].equals("B")) {
-                    count++;
-                }
+        countStart = false;
+        for (int i = n - 1; i >= 0; i--) {
+            if (balls[i].equals("B")) {
+                countStart = true;
             }
-            answer = Math.min(answer, count);
-            count = 0;
-            for (int i = 0; i < n; i++) {
-                if (balls[i].equals("B")) {
-                    count++;
-                }
+            if (countStart && balls[i].equals("R")) {
+                count++;
             }
-            answer = Math.min(answer, count);
-        } else {
-            boolean canMove = false;
-            for (int i = n - 1; i >= 0; i--) {
-                if (balls[i].equals("R")) {
-                    canMove = true;
-                }
-                if (canMove && balls[i].equals("B")) {
-                    count++;
-                }
-            }
-            answer = Math.min(answer, count);
-            count = 0;
-            canMove = false;
-            for (int i = 0; i < n; i++) {
-                if (balls[i].equals("R")) {
-                    canMove = true;
-                }
-                if (canMove && balls[i].equals("B")) {
-                    count++;
-                }
-            }
-            answer = Math.min(answer, count);
         }
+        answer = Math.min(count, answer);
+
+        // 파란색 왼쪽
+        count = 0;
+        countStart = false;
+        for (int i = 0; i < n; i++) {
+            if (balls[i].equals("R")) {
+                countStart = true;
+            }
+            if (countStart && balls[i].equals("B")) {
+                count++;
+            }
+        }
+        answer = Math.min(count, answer);
+
+        // 파란색 오른쪽
+        count = 0;
+        countStart = false;
+        for (int i = n - 1; i >= 0; i--) {
+            if (balls[i].equals("R")) {
+                countStart = true;
+            }
+            if (countStart && balls[i].equals("B")) {
+                count++;
+            }
+        }
+        answer = Math.min(count, answer);
 
         System.out.println(answer);
+
     }
 }
