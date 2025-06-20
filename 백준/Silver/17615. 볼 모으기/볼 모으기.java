@@ -23,6 +23,14 @@ public class Main {
                     count++;
                 }
             }
+            answer = Math.min(answer, count);
+            count = 0;
+            for (int i = 0; i < n; i++) {
+                if (balls[i].equals("R")) {
+                    count++;
+                }
+            }
+            answer = Math.min(answer, count);
         } else {
             boolean canMove = false;
             for (int i = n - 1; i >= 0; i--) {
@@ -33,8 +41,20 @@ public class Main {
                     count++;
                 }
             }
+            answer = Math.min(answer, count);
+            count = 0;
+            canMove = false;
+            for (int i = 0; i < n; i++) {
+                if (balls[i].equals("B")) {
+                    canMove = true;
+                }
+                if (canMove && balls[i].equals("R")) {
+                    count++;
+                }
+            }
+            answer = Math.min(answer, count);
         }
-        answer = Math.min(answer, count);
+
         // 파란색 이동
         count = 0;
         if (balls[n - 1].equals("R")) {
@@ -43,6 +63,14 @@ public class Main {
                     count++;
                 }
             }
+            answer = Math.min(answer, count);
+            count = 0;
+            for (int i = 0; i < n; i++) {
+                if (balls[i].equals("B")) {
+                    count++;
+                }
+            }
+            answer = Math.min(answer, count);
         } else {
             boolean canMove = false;
             for (int i = n - 1; i >= 0; i--) {
@@ -53,8 +81,20 @@ public class Main {
                     count++;
                 }
             }
+            answer = Math.min(answer, count);
+            count = 0;
+            canMove = false;
+            for (int i = 0; i < n; i++) {
+                if (balls[i].equals("R")) {
+                    canMove = true;
+                }
+                if (canMove && balls[i].equals("B")) {
+                    count++;
+                }
+            }
+            answer = Math.min(answer, count);
         }
-        answer = Math.min(answer, count);
+
         System.out.println(answer);
     }
 }
