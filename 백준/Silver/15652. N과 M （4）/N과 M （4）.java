@@ -1,42 +1,37 @@
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.IOException;
-import java.nio.Buffer;
-import java.util.StringTokenizer;
+import java.io.InputStreamReader;
 
-// 15652번
+
 public class Main {
-    public static int N, M;
-    public static int[] arr;
-    public static StringBuilder sb = new StringBuilder();
+
+    private static int n;
+    private static int m;
+    private static int[] numbers;
+    private static StringBuilder answer = new StringBuilder();
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
-
-        arr = new int[M];
-
-        dfs(0,0);
-
-        System.out.println(sb);
+        String[] temp = br.readLine().split(" ");
+        n = Integer.parseInt(temp[0]);
+        m = Integer.parseInt(temp[1]);
+        numbers = new int[m];
+        backTracking(0, 1);
+        System.out.println(answer);
     }
 
-    public static void dfs(int depth, int start) {
-        if (depth == M) {
-            for (int n : arr) {
-                sb.append(n).append(" ");
+    private static void backTracking(int length, int start) {
+        if (length == m) {
+            for (int i = 0; i < length; i++) {
+                answer.append(numbers[i]).append(" ");
             }
-            sb.append("\n");
+            answer.append("\n");
             return;
         }
 
-        for (int i = start; i < N; i++) {
-            arr[depth] = i + 1;
-            dfs(depth+1, arr[depth]-1);
+        for (int i = start; i <= n; i++) {
+            numbers[length] = i;
+            backTracking(length + 1, i);
         }
     }
-
 }
